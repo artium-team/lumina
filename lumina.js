@@ -128,7 +128,41 @@
 
         leftButton.addEventListener("touchstart", () => {
             keysPressed['ArrowLeft'] = true;
-            console.log("!");
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
+        });
+        rightButton.addEventListener("touchstart", () => {
+            keysPressed['ArrowRight'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
+        });
+        upButton.addEventListener("touchstart", () => {
+            keysPressed['ArrowUp'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
+        });
+        downButton.addEventListener("touchstart", () => {
+            keysPressed['ArrowDown'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
+        });
+        aButton.addEventListener("touchstart", () => {
+            keysPressed['z'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
+        });
+        bButton.addEventListener("touchstart", () => {
+            keysPressed['x'] = true;
             if (notStart) {
                 intro();
                 notStart = false;
@@ -137,6 +171,21 @@
 
         leftButton.addEventListener("touchend", () => {
             keysPressed['ArrowLeft'] = false;
+        });
+        rightButton.addEventListener("touchend", () => {
+            keysPressed['ArrowRight'] = false;
+        });
+        upButton.addEventListener("touchend", () => {
+            keysPressed['ArrowUp'] = false;
+        });
+        downButton.addEventListener("touchend", () => {
+            keysPressed['ArrowDown'] = false;
+        });
+        aButton.addEventListener("touchend", () => {
+            keysPressed['z'] = false;
+        });
+        bButton.addEventListener("touchend", () => {
+            keysPressed['x'] = false;
         });
 
         leftButton.addEventListener("mouseup", () => {
