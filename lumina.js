@@ -189,12 +189,10 @@
     let numFrames = 0, note1 = false, note2 = false;
 
     const intro = function () {
-        console.log('1');
         cls();
 
         if (numFrames > introFrames == false) {
             numFrames += 5;
-            console.log((currentMode + 1) * 32 / 2);
             circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames, 8);
             circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames - 20, 9);
             circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames - 40, 10);
