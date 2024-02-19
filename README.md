@@ -1,2 +1,2 @@
 # lumina
-8bit Fantasy Console
+An retro 8BIT Fantasy Console mode by Artium!
