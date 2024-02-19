@@ -231,7 +231,7 @@
 
         audioContext = new AudioContext();
 
-        const font = new FontFace('font', 'url("./font.ttf")');
+        const font = new FontFace('font', 'url("https://raw.githubusercontent.com/artium-team/lumina/master/src/font.ttf")')
         font.load().then(function (font) {
             document.fonts.add(font);
             ctx.font = `${8 * resolution}px font`;
