@@ -84,6 +84,7 @@
 
         leftButton.addEventListener("mousedown", () => {
             keysPressed['ArrowLeft'] = true;
+            console.log("!");
             if (notStart) {
                 intro();
                 notStart = false;
@@ -123,6 +124,19 @@
                 intro();
                 notStart = false;
             }
+        });
+
+        leftButton.addEventListener("touchstart", () => {
+            keysPressed['ArrowLeft'] = true;
+            console.log("!");
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
+        });
+
+        leftButton.addEventListener("touchend", () => {
+            keysPressed['ArrowLeft'] = false;
         });
 
         leftButton.addEventListener("mouseup", () => {
