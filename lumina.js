@@ -9,6 +9,7 @@
     const keyMap = [false, false, false, false, false, false]; // left right up down a b
 
     let upButton, downButton, leftButton, rightButton, aButton, bButton;
+    let currentMode;
 
     const setup = function () {
         const pixelRatio = (function () {
@@ -39,7 +40,7 @@
         ctx = canvas.getContext("2d");
 
         const style = document.createElement("style");
-        style.innerHTML = "body { margin: 0 } #lumina-canvas {background-color: black; image-rendering: pixelated;} .button,.dpad-button{font-size:20px;text-align:center;line-height:50px;cursor:pointer}#canvas-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100vw;height:100vh}#lumina-canvas{border:1px solid #000;}.button-container{display:flex;gap:20px;padding:22px;background-color: #ffbf00;border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;}.button{width:50px;height:50px;border:1px solid #000;border-radius:5px}.dpad-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;width:150px;height:150px}.dpad-button{position:absolute;width:50px;height:50px;border:1px solid #000;border-radius:50%}.button:active,.dpad-button:active{background-color:azure}.left,.right{top:50%;transform:translateY(-50%)}.left{left:0}.right{right:0}.down,.up{left:50%;transform:translateX(-50%)}.up{top:0}.down{bottom:0}";
+        style.innerHTML = "body { margin: 0 } #lumina-canvas {background-color: black; image-rendering: pixelated;} .button,.dpad-button{font-size:20px;text-align:center;line-height:50px;cursor:pointer}#canvas-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100vw;height:100vh}#lumina-canvas{border:1px solid #000;}.button-container{display:flex;gap:20px;padding:22px;background-color: #ffbf00;border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;}.button{width:50px;height:50px;border:1px solid #000;border-radius:5px}.dpad-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;width:150px;height:150px}.dpad-button{position:absolute;width:50px;height:50px;border:1px solid #000;border-radius:50%}.button:active,.dpad-button:active{background:azure}.left,.right{top:50%;transform:translateY(-50%)}.left{left:0}.right{right:0}.down,.up{left:50%;transform:translateX(-50%)}.up{top:0}.down{bottom:0}";
         document.getElementsByTagName("head")[0].appendChild(style);
 
         function fromHTML(html, trim = true) {
@@ -83,21 +84,45 @@
 
         leftButton.addEventListener("mousedown", () => {
             keysPressed['ArrowLeft'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
         });
         rightButton.addEventListener("mousedown", () => {
             keysPressed['ArrowRight'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
         });
         upButton.addEventListener("mousedown", () => {
             keysPressed['ArrowUp'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
         });
         downButton.addEventListener("mousedown", () => {
             keysPressed['ArrowDown'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
         });
         aButton.addEventListener("mousedown", () => {
             keysPressed['z'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
         });
         bButton.addEventListener("mousedown", () => {
             keysPressed['x'] = true;
+            if (notStart) {
+                intro();
+                notStart = false;
+            }
         });
 
         leftButton.addEventListener("mouseup", () => {
@@ -150,6 +175,12 @@
             try {
                 init();
                 cls();
+
+                resolution = 350 / 64;
+                ctx.font = `${8 * resolution}px font`;
+                text("Press any button", 2, 30);
+                text("to start", 17, 38);
+                mode(currentMode);
             } catch { }
         });
     }
@@ -158,21 +189,23 @@
     let numFrames = 0, note1 = false, note2 = false;
 
     const intro = function () {
+        console.log('1');
         cls();
 
         if (numFrames > introFrames == false) {
             numFrames += 5;
-            circfill(32, 32, numFrames, 8);
-            circfill(32, 32, numFrames - 20, 9);
-            circfill(32, 32, numFrames - 40, 10);
-            circfill(32, 32, numFrames - 60, 11);
-            circfill(32, 32, numFrames - 60, 0);
-            if (numFrames > 90 && !note1) {
-                sound(622, 100);
+            console.log((currentMode + 1) * 32 / 2);
+            circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames, 8);
+            circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames - 20, 9);
+            circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames - 40, 10);
+            circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames - 60, 11);
+            circfill(Math.pow(2, currentMode) * 32 / 2, Math.pow(2, currentMode) * 32 / 2, numFrames - 60, 0);
+            if (numFrames > 60 && !note1) {
+                sound(622, 200);
                 note1 = true;
             }
-            if (numFrames > 100 && !note2) {
-                sound(880, 100);
+            if (numFrames > 90 && !note2) {
+                sound(880, 300);
                 note2 = true;
             }
             setTimeout(() => {
@@ -195,6 +228,11 @@
         }, 1000 / fps);
     }
 
+    let notStart = true;
+    window.onload = () => {
+        setup();
+    }
+
     let keysPressed = [];
     document.addEventListener('keydown', (event) => {
         keysPressed[event.key] = true;
@@ -205,6 +243,11 @@
         if (keysPressed['ArrowDown']) downButton.style.background = 'azure';
         if (keysPressed['z'] || keysPressed['c']) aButton.style.background = 'azure';
         if (keysPressed['x'] || keysPressed['v']) bButton.style.background = 'azure';
+
+        if (notStart) {
+            intro();
+            notStart = false;
+        }
     });
     document.addEventListener('keyup', (event) => {
         keysPressed[event.key] = false;
@@ -230,6 +273,10 @@
         }
         else if (mode == 2) {
             resolution = 350 / 128;
+        }
+
+        if (mode >= 0 && mode <= 2) {
+            currentMode = mode;
         }
         ctx.font = `${8 * resolution}px font`;
     }
@@ -378,12 +425,6 @@
             setTimeout(() => gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.015), duration);
         })
     };
-
-    window.onload = () => {
-        setup();
-        intro();
-        // loop();
-    }
 
     exports.mode = mode;
     exports.btn = btn;
