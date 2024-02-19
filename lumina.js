@@ -1,12 +1,14 @@
 (function (exports) {
     "use strict";
 
-    let resolution = (window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) - 10;
+    let resolution = 350;
     const fps = 60;
     let canvas, ctx, audioContext;
 
     const colors = ["#000000", "#1D2B53", "#7E2553", "#008751", "#AB5236", "#5F574F", "#C2C3C7", "#FFF1E8", "#FF004D", "#FFA300", "#FFEC27", "#00E436", "#29ADFF", "#83769C", "#FF77A8", "#FFCCAA"];
     const keyMap = [false, false, false, false, false, false]; // left right up down a b
+
+    let upButton, downButton, leftButton, rightButton, aButton, bButton;
 
     const setup = function () {
         const pixelRatio = (function () {
@@ -36,13 +38,105 @@
         canvas = createHiDPICanvas(resolution, resolution, 4);
         ctx = canvas.getContext("2d");
 
-        document.body.appendChild(canvas);
-
         const style = document.createElement("style");
-        style.innerHTML = "body { margin: 0; display: flex; justify-content: center; align-items: center; } canvas {background-color: black; image-rendering: pixelated;}";
+        style.innerHTML = "body { margin: 0 } #lumina-canvas {background-color: black; image-rendering: pixelated;} .button,.dpad-button{font-size:20px;text-align:center;line-height:50px;cursor:pointer}#canvas-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100vw;height:100vh}#lumina-canvas{border:1px solid #000;}.button-container{display:flex;gap:20px;padding:22px;background-color: #ffbf00;border-bottom-left-radius: 25px;border-bottom-right-radius: 25px;}.button{width:50px;height:50px;border:1px solid #000;border-radius:5px}.dpad-container{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;width:150px;height:150px}.dpad-button{position:absolute;width:50px;height:50px;border:1px solid #000;border-radius:50%}.button:active,.dpad-button:active{background-color:azure}.left,.right{top:50%;transform:translateY(-50%)}.left{left:0}.right{right:0}.down,.up{left:50%;transform:translateX(-50%)}.up{top:0}.down{bottom:0}";
         document.getElementsByTagName("head")[0].appendChild(style);
 
-        
+        function fromHTML(html, trim = true) {
+            html = trim ? html : html.trim();
+            if (!html) return null;
+
+            const template = document.createElement('template');
+            template.innerHTML = html;
+            const result = template.content.children;
+
+            if (result.length === 1) return result[0];
+            return result;
+        }
+
+        const components = fromHTML(`
+            <div id="canvas-container">
+                <div class="button-container">
+                    <div class="dpad-container">
+                        <div class="dpad-button up"></div>
+                        <div class="dpad-button left"></div>
+                        <div class="dpad-button right"></div>
+                        <div class="dpad-button down"></div>
+                    </div>
+
+                    <div class="button" style="position: relative; top: 50px; margin-left: 15px;"></div>
+                    <div class="button" style="position: relative; top: 15px;"></div>
+                </div>
+            </div>
+        `);
+        document.body.appendChild(components);
+
+        document.getElementById("canvas-container").insertBefore(canvas, document.getElementsByClassName("button-container")[0]);
+
+        aButton = document.getElementsByClassName("button")[0];
+        bButton = document.getElementsByClassName("button")[1];
+
+        leftButton = document.getElementsByClassName("left")[0];
+        rightButton = document.getElementsByClassName("right")[0];
+        upButton = document.getElementsByClassName("up")[0];
+        downButton = document.getElementsByClassName("down")[0];
+
+        leftButton.addEventListener("mousedown", () => {
+            keysPressed['ArrowLeft'] = true;
+        });
+        rightButton.addEventListener("mousedown", () => {
+            keysPressed['ArrowRight'] = true;
+        });
+        upButton.addEventListener("mousedown", () => {
+            keysPressed['ArrowUp'] = true;
+        });
+        downButton.addEventListener("mousedown", () => {
+            keysPressed['ArrowDown'] = true;
+        });
+        aButton.addEventListener("mousedown", () => {
+            keysPressed['z'] = true;
+        });
+        bButton.addEventListener("mousedown", () => {
+            keysPressed['x'] = true;
+        });
+
+        leftButton.addEventListener("mouseup", () => {
+            keysPressed['ArrowLeft'] = false;
+        });
+        rightButton.addEventListener("mouseup", () => {
+            keysPressed['ArrowRight'] = false;
+        });
+        upButton.addEventListener("mouseup", () => {
+            keysPressed['ArrowUp'] = false;
+        });
+        downButton.addEventListener("mouseup", () => {
+            keysPressed['ArrowDown'] = false;
+        });
+        aButton.addEventListener("mouseup", () => {
+            keysPressed['z'] = false;
+        });
+        bButton.addEventListener("mouseup", () => {
+            keysPressed['x'] = false;
+        });
+
+        leftButton.addEventListener("mouseleave", () => {
+            keysPressed['ArrowLeft'] = false;
+        });
+        rightButton.addEventListener("mouseleave", () => {
+            keysPressed['ArrowRight'] = false;
+        });
+        upButton.addEventListener("mouseleave", () => {
+            keysPressed['ArrowUp'] = false;
+        });
+        downButton.addEventListener("mouseleave", () => {
+            keysPressed['ArrowDown'] = false;
+        });
+        aButton.addEventListener("mouseleave", () => {
+            keysPressed['z'] = false;
+        });
+        bButton.addEventListener("mouseleave", () => {
+            keysPressed['x'] = false;
+        });
 
         resolution /= 64;
         // resolution /= 128;
@@ -55,8 +149,40 @@
             ctx.font = `${8 * resolution}px font`;
             try {
                 init();
+                cls();
             } catch { }
         });
+    }
+
+    const introFrames = 120;
+    let numFrames = 0, note1 = false, note2 = false;
+
+    const intro = function () {
+        cls();
+
+        if (numFrames > introFrames == false) {
+            numFrames += 5;
+            circfill(32, 32, numFrames, 8);
+            circfill(32, 32, numFrames - 20, 9);
+            circfill(32, 32, numFrames - 40, 10);
+            circfill(32, 32, numFrames - 60, 11);
+            circfill(32, 32, numFrames - 60, 0);
+            if (numFrames > 90 && !note1) {
+                sound(622, 100);
+                note1 = true;
+            }
+            if (numFrames > 100 && !note2) {
+                sound(880, 100);
+                note2 = true;
+            }
+            setTimeout(() => {
+                requestAnimationFrame(intro);
+            }, 1000 / fps);
+        }
+        else {
+            loop();
+        }
+
     }
 
     const loop = function () {
@@ -73,9 +199,23 @@
     let keysPressed = [];
     document.addEventListener('keydown', (event) => {
         keysPressed[event.key] = true;
+
+        if (keysPressed['ArrowLeft']) leftButton.style.background = 'azure';
+        if (keysPressed['ArrowRight']) rightButton.style.background = 'azure';
+        if (keysPressed['ArrowUp']) upButton.style.background = 'azure';
+        if (keysPressed['ArrowDown']) downButton.style.background = 'azure';
+        if (keysPressed['z'] || keysPressed['c']) aButton.style.background = 'azure';
+        if (keysPressed['x'] || keysPressed['v']) bButton.style.background = 'azure';
     });
     document.addEventListener('keyup', (event) => {
         keysPressed[event.key] = false;
+
+        if (!keysPressed['ArrowLeft']) leftButton.style.background = 'none';
+        if (!keysPressed['ArrowRight']) rightButton.style.background = 'none';
+        if (!keysPressed['ArrowUp']) upButton.style.background = 'none';
+        if (!keysPressed['ArrowDown']) downButton.style.background = 'none';
+        if (!keysPressed['z'] && !keysPressed['c']) aButton.style.background = 'none';
+        if (!keysPressed['x'] && !keysPressed['v']) bButton.style.background = 'none';
     });
 
     const cls = function () {
@@ -84,13 +224,13 @@
 
     const mode = function (mode) {
         if (mode == 0) {
-            resolution = ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) - 20) / 32;
+            resolution = 350 / 32;
         }
         else if (mode == 1) {
-            resolution = ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) - 20) / 64;
+            resolution = 350 / 64;
         }
         else if (mode == 2) {
-            resolution = ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) - 20) / 128;
+            resolution = 350 / 128;
         }
         ctx.font = `${8 * resolution}px font`;
     }
@@ -115,7 +255,11 @@
         ctx.fillRect(x * resolution, y * resolution, resolution, resolution);
     }
 
-    const text = function (text, x, y) {
+    const text = function (text, x, y, col) {
+        col = colors[col];
+        if (!col) { col = "#FFF1E8" };
+        ctx.fillStyle = col;
+
         ctx.fillText(text, x * resolution, y * resolution);
     }
 
@@ -226,7 +370,7 @@
     const sound = (frequency, duration) => {
         audioContext.resume().then(() => {
             const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0.5;
+            gainNode.gain.value = 0.25;
             const oscillator = audioContext.createOscillator();
             oscillator.frequency.value = frequency;
             oscillator.connect(gainNode);
@@ -238,7 +382,8 @@
 
     window.onload = () => {
         setup();
-        loop();
+        intro();
+        // loop();
     }
 
     exports.mode = mode;
