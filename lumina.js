@@ -154,7 +154,7 @@
         });
     }
 
-    const introFrames = 120;
+    const introFrames = 100;
     let numFrames = 0, note1 = false, note2 = false;
 
     const intro = function () {
@@ -182,7 +182,6 @@
         else {
             loop();
         }
-
     }
 
     const loop = function () {
