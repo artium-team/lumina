@@ -12,6 +12,8 @@ Download `lumina.js`, add this tag to your HTML:
     <script src="../src/lumina.js"></script>
 ```
 
+### `init()` and `update()`
+
 ### Functions
 
 `mode(x)` → Set display mode for Lumina, which has 3 modes:
