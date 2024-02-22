@@ -32,3 +32,11 @@ function update() {
 - **Mode 2:** 128x128px display
 
 And by default, Lumina use mode 1 instead of the 2 others
+
+`btn(x)` → Will return value `true` or `false` if the button with id `x` is pressed or not
+- Button 0: Left arrow (on both keyboard and the d-pad)
+- Button 1: Right arrow (on both keyboard and the d-pad)
+- Button 2: Up arrow (on both keyboard and the d-pad)
+- Button 3: Down arrow (on both keyboard and the d-pad)
+- Button 4: A key (`z` or `c` key on keyboard and the left button on the console display)
+- Button 5: B key (`x` or `v` key on keyboard and the right button on the console displa)
