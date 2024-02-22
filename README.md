@@ -14,6 +14,16 @@ Download `lumina.js`, add this tag to your HTML:
 
 ### `init()` and `update()`
 
+```js
+function init() {
+    // Put your code here and it will be called only on the first frame
+}
+
+function update() {
+    // Put your code here and it will be called 60 time per second (60fps)
+}
+```
+
 ### Functions
 
 `mode(x)` → Set display mode for Lumina, which has 3 modes:
