@@ -40,3 +40,5 @@ And by default, Lumina use mode 1 instead of the 2 others
 - **Button 3:** Down arrow (on both keyboard and the d-pad)
 - **Button 4:** A key (`z` or `c` key on keyboard and the left button on the console display)
 - **Button 5:** B key (`x` or `v` key on keyboard and the right button on the console display)
+
+- `pset(x, y, [col])` → Set the pixel of coordinate `x`, `y` with the color `col`
