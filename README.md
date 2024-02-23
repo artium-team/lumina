@@ -54,3 +54,5 @@ And by default, Lumina uses mode 1 instead of the 2 others
 `rect(x1, y1, x2, y2, [col])` → Draw a rectangle outline at from point `x1`, `y1` to point `x2`, `y2` with the color `col`
 
 `rectfill(x1, y1, x2, y2, [col])` → Fill a rectangle at from point `x1`, `y1` to point `x2`, `y2` with the color `col`
+
+`sound(frequency, duration)` → Play a noise with `frequency` (hz) with `duration` (ms)
