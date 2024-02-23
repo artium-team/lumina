@@ -30,6 +30,12 @@ Lumina uses a 16-color pallet as below:
 
 ![pico-8-32x](https://github.com/artium-team/lumina/assets/108968549/8cc04ab1-0bab-4c6e-9994-53e7fbcf28a1)
 
+Lumina also supports 3 display mode:
+
+![mode0](https://github.com/artium-team/lumina/assets/108968549/f27e60db-3a23-4fa0-8496-3e223ce5d720)
+![mode1](https://github.com/artium-team/lumina/assets/108968549/8a26558c-096c-4162-9bcc-064ab691ad66)
+![mode2](https://github.com/artium-team/lumina/assets/108968549/99d84576-1986-48b5-bc79-f87246665d5b)
+
 ### Functions
 
 `mode(x)` → Set display mode for Lumina, which has 3 modes:
