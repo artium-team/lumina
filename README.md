@@ -6,7 +6,7 @@ Games for Lumina can be written in [simple JavaScript code](./docs/README.md). L
 ## How to make a game with Lumina
 
 ### Setup
-Download `lumina.js`, add this tag to your HTML:
+Download `lumina.js`, and add this tag to your HTML:
 
 ```html
     <script src="../src/lumina.js"></script>
@@ -20,7 +20,7 @@ function init() {
 }
 
 function update() {
-    // Put your code here and it will be called 60 time per second (60fps)
+    // Put your code here and it will be called 60 times per second (60fps)
 }
 ```
 
@@ -31,14 +31,18 @@ function update() {
 - **Mode 1:** 64x64px display
 - **Mode 2:** 128x128px display
 
-And by default, Lumina use mode 1 instead of the 2 others
+And by default, Lumina uses mode 1 instead of the 2 others
 
 `btn(x)` → Will return value `true` or `false` if the button with id `x` is pressed or not
-- **Button 0:** Left arrow (on both keyboard and the d-pad)
-- **Button 1:** Right arrow (on both keyboard and the d-pad)
-- **Button 2:** Up arrow (on both keyboard and the d-pad)
-- **Button 3:** Down arrow (on both keyboard and the d-pad)
-- **Button 4:** A key (`z` or `c` key on keyboard and the left button on the console display)
-- **Button 5:** B key (`x` or `v` key on keyboard and the right button on the console display)
+- **Button 0:** Left arrow (on both the keyboard and the d-pad)
+- **Button 1:** Right arrow (on both the keyboard and the d-pad)
+- **Button 2:** Up arrow (on both the keyboard and the d-pad)
+- **Button 3:** Down arrow (on both the keyboard and the d-pad)
+- **Button 4:** A key (`z` or `c` key on the keyboard and the left button on the console display)
+- **Button 5:** B key (`x` or `v` key on the keyboard and the right button on the console display)
 
-`pset(x, y, [col])` → Set the pixel of coordinate `x`, `y` with the color `col`
+`pset(x, y, [col])` → Set the pixel at point `x`, `y` to the color `col`
+
+`text(text, x, y, [col])` → Print `text` at point `x`, `y` with the color `col`
+
+`line(x1, y1, x2, y2, [col])` → Draw line from point `x1`, `y1` to point `x2`, `y2` with the color `col`
