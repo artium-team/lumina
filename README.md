@@ -24,6 +24,12 @@ function update() {
 }
 ```
 
+### Colors and modes
+
+Lumina uses a 16-color pallet as below:
+
+![pico-8-32x](https://github.com/artium-team/lumina/assets/108968549/8cc04ab1-0bab-4c6e-9994-53e7fbcf28a1)
+
 ### Functions
 
 `mode(x)` → Set display mode for Lumina, which has 3 modes:
