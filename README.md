@@ -46,3 +46,11 @@ And by default, Lumina uses mode 1 instead of the 2 others
 `text(text, x, y, [col])` → Print `text` at point `x`, `y` with the color `col`
 
 `line(x1, y1, x2, y2, [col])` → Draw line from point `x1`, `y1` to point `x2`, `y2` with the color `col`
+
+`circ(x, y, radius, [col])` → Draw a circle outline at point `x`, `y` with radius `radius` and with the color `col`
+
+`circfill(x, y, radius, [col])` → Fill a circle at point `x`, `y` with radius `radius` and with the color `col`
+
+`rect(x1, y1, x2, y2, [col])` → Draw a rectangle outline at from point `x1`, `y1` to point `x2`, `y2` with the color `col`
+
+`rectfill(x1, y1, x2, y2, [col])` → Fill a rectangle at from point `x1`, `y1` to point `x2`, `y2` with the color `col`
